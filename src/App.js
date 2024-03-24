@@ -1,9 +1,12 @@
-import logo from './platzi.webp';
+import logo from './react512.png';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
+      
+      <TodoItem/>
+
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -19,6 +22,17 @@ function App() {
         </a>
       </header>
     </div>
+  );
+}
+
+function TodoItem () {
+  return (
+    <li>
+        <span> ✅ </span>
+        <p> 1 hora de coding </p>
+        <span> ❌ </span>
+    </li>
+
   );
 }
 
