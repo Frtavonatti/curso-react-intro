@@ -1,0 +1,9 @@
+.todoItem-container { 
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 10px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.9);
+}
