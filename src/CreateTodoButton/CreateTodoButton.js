@@ -7,6 +7,7 @@ function CreateTodoButton() {
     }}>
       <button  
         className='createTodo-button'
+        onClick={() => console.log('Click')}
         type="button">Crear nueva tarea</button>
     </div>
   )
