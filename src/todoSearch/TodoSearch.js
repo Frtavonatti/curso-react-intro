@@ -4,6 +4,8 @@ import './TodoSearch.css'
 function TodoSearch() {
   const [searchValue, setSearchValue] = React.useState('')
 
+  console.log(searchValue)
+
 
   return (
     <div
@@ -21,7 +23,6 @@ function TodoSearch() {
         // More info: https://reactjs.org/link/controlled-components
         onChange={(event) => {
           setSearchValue(event.target.value)
-          console.log(searchValue)
         }}     
         placeholder="Agrega una nueva tarea"/>
         <button 
