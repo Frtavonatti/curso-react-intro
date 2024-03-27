@@ -14,14 +14,20 @@ const defaultToDos = [
   {text: 'Tocar guitarra', completed: false},
 ]
 
+// CHALLENGE: desarrollar funcionalidad para mostrar elementos que se buscan en la lista de To-do´s
+
 function App() {
   const [searchValue, setSearchValue] = React.useState('')
   const [todos, setTodos] = React.useState(defaultToDos)
   
-  const completedTodos = todos.filter((todo) => !!todo.completed).length
+  const completedTodos = todos.filter((todo) => Boolean(todo.completed)).length
   const totalTodos = todos.length;
   
-  console.log(searchValue)
+  // console.log(searchValue)
+
+  const filteredTodos = defaultToDos.filter((todo) => todo.text.toLowerCase()
+  .includes(searchValue.toLowerCase()))
+  console.log(filteredTodos)
 
   return (
     <React.Fragment>
@@ -34,7 +40,7 @@ function App() {
       />
 
       <TodoList>
-        {defaultToDos.map(todo => (
+        {filteredTodos.map(todo => (
           <TodoItem 
           key={todo.text}  
           text={todo.text}  
