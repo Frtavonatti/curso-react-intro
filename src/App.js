@@ -10,17 +10,28 @@ import { TodoHeader } from './TodoHeader/TodoHeader';
 const defaultToDos = [
   {text: 'Programar', completed: true},
   {text: 'Aprender a tatuar', completed: false},
-  {text: 'Tocar bateria', completed: false},
+  {text: 'Tocar bateria', completed: true},
   {text: 'Tocar guitarra', completed: false},
 ]
 
 function App() {
+  const [searchValue, setSearchValue] = React.useState('')
+  const [todos, setTodos] = React.useState(defaultToDos)
+  
+  const completedTodos = todos.filter((todo) => !!todo.completed).length
+  const totalTodos = todos.length;
+  
+  console.log(searchValue)
+
   return (
     <React.Fragment>
       <TodoHeader/>
 
-      <TodoCounter completed={3} total={5} />
-      <TodoSearch/>
+      <TodoCounter completed={completedTodos} total={totalTodos} />
+      <TodoSearch
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
 
       <TodoList>
         {defaultToDos.map(todo => (
