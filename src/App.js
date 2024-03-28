@@ -8,36 +8,56 @@ import { TodoItem } from './TodoItem/TodoItem';
 import { TodoHeader } from './TodoHeader/TodoHeader';
 
 const defaultToDos = [
-  {text: 'Programar', completed: true},
+  {text: 'Programar', completed: false},
   {text: 'Aprender a tatuar', completed: false},
-  {text: 'Tocar bateria', completed: true},
+  {text: 'Tocar bateria', completed: false},
   {text: 'Tocar guitarra', completed: false},
 ]
-
-// CHALLENGE: desarrollar funcionalidad para mostrar elementos que se buscan en la lista de To-do´s
 
 function App() {
   const [searchValue, setSearchValue] = React.useState('')
   const [todos, setTodos] = React.useState(defaultToDos)
   
+  //Funcion para contar la cantidad total de todos y todos completados
   const completedTodos = todos.filter((todo) => Boolean(todo.completed)).length
   const totalTodos = todos.length;
-  
-  // console.log(searchValue)
 
-  const filteredTodos = defaultToDos.filter((todo) => todo.text.toLowerCase()
-  .includes(searchValue.toLowerCase()))
-  console.log(filteredTodos)
+  // Funcion para filtrar por contenido (texto) en la barra de busqueda
+  const filteredTodos = todos.filter(
+    (todo) => todo.text.toLowerCase()
+    .includes(searchValue.toLowerCase())
+  )
+
+  // Funcion para marcar todos como completados
+  // PENDING: modificar completed = false al momento de desmarcar checkbox
+  const checkTodo = (text) => {
+    const newTodos = [...todos]
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text == text
+    )
+    newTodos[todoIndex].completed = true
+    setTodos(newTodos)
+    console.log(newTodos)
+  }
+
+  // Funcion para eliminar todos
+  const deleteTodo = (text) => {
+    const newTodos = [...todos]
+    const todoIndex = newTodos.findIndex(
+      (todo) => todo.text == text
+    )
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos)
+    console.log(newTodos)
+  }
 
   return (
     <React.Fragment>
       <TodoHeader/>
 
       <TodoCounter completed={completedTodos} total={totalTodos} />
-      <TodoSearch
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-      />
+
+      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
 
       <TodoList>
         {filteredTodos.map(todo => (
@@ -45,6 +65,8 @@ function App() {
           key={todo.text}  
           text={todo.text}  
           status={todo.completed}
+          onComplete={() => checkTodo(todo.text)}
+          onDelete={() => deleteTodo(todo.text)}
           />
         ))}
       </TodoList>
