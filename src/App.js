@@ -35,7 +35,7 @@ function App() {
     const todoIndex = newTodos.findIndex(
       (todo) => todo.text == text
     )
-    newTodos[todoIndex].completed = true
+    newTodos[todoIndex].completed = !newTodos[todoIndex].completed
     setTodos(newTodos)
     console.log(newTodos)
   }
