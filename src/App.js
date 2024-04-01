@@ -7,16 +7,28 @@ import { CreateTodoButton } from './CreateTodoButton/CreateTodoButton';
 import { TodoItem } from './TodoItem/TodoItem';
 import { TodoHeader } from './TodoHeader/TodoHeader';
 
-const defaultToDos = [
-  {text: 'Programar', completed: false},
-  {text: 'Aprender a tatuar', completed: false},
-  {text: 'Tocar bateria', completed: false},
-  {text: 'Tocar guitarra', completed: false},
-]
+// const defaultToDos = [
+//   {text: 'Programar', completed: false},
+//   {text: 'Aprender a tatuar', completed: false},
+//   {text: 'Tocar bateria', completed: false},
+//   {text: 'Tocar guitarra', completed: false},
+// ]
+// localStorage.setItem('TODOS_V1', JSON.stringify(defaultToDos));
+// localStorage.removeItem('TODOS_V1');
 
 function App() {
+const localStorageTodos = localStorage.getItem('TODOS_V1')
+let parsedTodos;
+
+if (!localStorageTodos) {
+  localStorage.setItem('TODOS_V1', JSON.stringify([]))
+  parsedTodos = []
+} else {
+  parsedTodos = JSON.parse(localStorageTodos)
+}
+
+const [todos, setTodos] = React.useState(parsedTodos)
   const [searchValue, setSearchValue] = React.useState('')
-  const [todos, setTodos] = React.useState(defaultToDos)
   
   //Funcion para contar la cantidad total de todos y todos completados
   const completedTodos = todos.filter((todo) => Boolean(todo.completed)).length
@@ -28,6 +40,12 @@ function App() {
     .includes(searchValue.toLowerCase())
   )
 
+  const saveTodos = (newTodos) => {
+    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos))
+    setTodos(newTodos)
+  }
+
+
   // Funcion para marcar todos como completados
   // PENDING: modificar completed = false al momento de desmarcar checkbox
   const checkTodo = (text) => {
@@ -36,7 +54,7 @@ function App() {
       (todo) => todo.text == text
     )
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed
-    setTodos(newTodos)
+    saveTodos(newTodos)
     console.log(newTodos)
   }
 
@@ -47,13 +65,13 @@ function App() {
       (todo) => todo.text == text
     )
     newTodos.splice(todoIndex, 1);
-    setTodos(newTodos)
+    saveTodos(newTodos)
     console.log(newTodos)
   }
 
   return (
     <React.Fragment>
-      <TodoHeader/>
+      <TodoHeader />
 
       <TodoCounter completed={completedTodos} total={totalTodos} />
 
@@ -71,7 +89,7 @@ function App() {
         ))}
       </TodoList>
 
-      <CreateTodoButton/>
+      <CreateTodoButton />
 
     </React.Fragment>
   );
