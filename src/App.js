@@ -16,18 +16,31 @@ import { TodoHeader } from './TodoHeader/TodoHeader';
 // localStorage.setItem('TODOS_V1', JSON.stringify(defaultToDos));
 // localStorage.removeItem('TODOS_V1');
 
-function App() {
-const localStorageTodos = localStorage.getItem('TODOS_V1')
-let parsedTodos;
+function useLocalStorage (itemName, initialValue) {
+  const localStorageItems = localStorage.getItem(itemName)
 
-if (!localStorageTodos) {
-  localStorage.setItem('TODOS_V1', JSON.stringify([]))
-  parsedTodos = []
-} else {
-  parsedTodos = JSON.parse(localStorageTodos)
+  let parsedItems;
+  
+  if (!localStorageItems) {
+    localStorage.setItem(itemName, JSON.stringify(initialValue))
+    parsedItems = initialValue
+  } else {
+    parsedItems = JSON.parse(localStorageItems)
+  }
+
+  // Esta linea crea el custom Hook que permite la comunicación con el componente App
+  const [item, setItem] = React.useState(parsedItems)
+  
+  const saveItem = (newItem) => {
+    localStorage.setItem(itemName, JSON.stringify(newItem))
+    setItem(newItem)
+  }
+
+  return [item, saveItem]
 }
 
-const [todos, setTodos] = React.useState(parsedTodos)
+function App() {
+  const [todos, saveTodos] = useLocalStorage('TODOS_V1', [])
   const [searchValue, setSearchValue] = React.useState('')
   
   //Funcion para contar la cantidad total de todos y todos completados
@@ -39,12 +52,6 @@ const [todos, setTodos] = React.useState(parsedTodos)
     (todo) => todo.text.toLowerCase()
     .includes(searchValue.toLowerCase())
   )
-
-  const saveTodos = (newTodos) => {
-    localStorage.setItem('TODOS_V1', JSON.stringify(newTodos))
-    setTodos(newTodos)
-  }
-
 
   // Funcion para marcar todos como completados
   // PENDING: modificar completed = false al momento de desmarcar checkbox
