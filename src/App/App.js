@@ -1,12 +1,7 @@
 import './App.css';
 import React from 'react';
-import { TodoCounter } from '../TodoCounter/index';
-import { TodoSearch } from '../todoSearch/index';
-import { TodoList } from '../TodoList/index';
-import { CreateTodoButton } from '../CreateTodoButton/index';
-import { TodoItem } from '../TodoItem/index';
-import { TodoHeader } from '../TodoHeader/index';
-import { useLocalStorage } from './useLocalStorage.jsx'
+import { useLocalStorage } from './useLocalStorage'
+import { AppUI } from './AppUI';
 
 // const defaultToDos = [
 //   {text: 'Programar', completed: false},
@@ -54,30 +49,17 @@ function App() {
     console.log(newTodos)
   }
 
-  return (
-    <React.Fragment>
-      <TodoHeader />
-
-      <TodoCounter completed={completedTodos} total={totalTodos} />
-
-      <TodoSearch searchValue={searchValue} setSearchValue={setSearchValue} />
-
-      <TodoList>
-        {filteredTodos.map(todo => (
-          <TodoItem 
-          key={todo.text}  
-          text={todo.text}  
-          status={todo.completed}
-          onComplete={() => checkTodo(todo.text)}
-          onDelete={() => deleteTodo(todo.text)}
-          />
-        ))}
-      </TodoList>
-
-      <CreateTodoButton />
-
-    </React.Fragment>
-  );
+  return ( 
+    <AppUI 
+      completedTodos={completedTodos}
+      totalTodos={totalTodos}
+      filteredTodos={filteredTodos}
+      deleteTodo={deleteTodo}
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
+      checkTodo={checkTodo}
+    /> 
+  )
 }
 
 export default App;
