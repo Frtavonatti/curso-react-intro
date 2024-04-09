@@ -1,11 +1,12 @@
 import './App.css';
 import React from 'react';
-import { TodoCounter } from './TodoCounter/TodoCounter';
-import { TodoSearch } from './todoSearch/TodoSearch';
-import { TodoList } from './TodoList/TodoList';
-import { CreateTodoButton } from './CreateTodoButton/CreateTodoButton';
-import { TodoItem } from './TodoItem/TodoItem';
-import { TodoHeader } from './TodoHeader/TodoHeader';
+import { TodoCounter } from '../TodoCounter/index';
+import { TodoSearch } from '../todoSearch/index';
+import { TodoList } from '../TodoList/index';
+import { CreateTodoButton } from '../CreateTodoButton/index';
+import { TodoItem } from '../TodoItem/index';
+import { TodoHeader } from '../TodoHeader/index';
+import { useLocalStorage } from './useLocalStorage.jsx'
 
 // const defaultToDos = [
 //   {text: 'Programar', completed: false},
@@ -15,29 +16,6 @@ import { TodoHeader } from './TodoHeader/TodoHeader';
 // ]
 // localStorage.setItem('TODOS_V1', JSON.stringify(defaultToDos));
 // localStorage.removeItem('TODOS_V1');
-
-function useLocalStorage (itemName, initialValue) {
-  const localStorageItems = localStorage.getItem(itemName)
-
-  let parsedItems;
-  
-  if (!localStorageItems) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue))
-    parsedItems = initialValue
-  } else {
-    parsedItems = JSON.parse(localStorageItems)
-  }
-
-  // Esta linea crea el custom Hook que permite la comunicación con el componente App
-  const [item, setItem] = React.useState(parsedItems)
-  
-  const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem))
-    setItem(newItem)
-  }
-
-  return [item, saveItem]
-}
 
 function App() {
   const [todos, saveTodos] = useLocalStorage('TODOS_V1', [])
@@ -58,7 +36,7 @@ function App() {
   const checkTodo = (text) => {
     const newTodos = [...todos]
     const todoIndex = newTodos.findIndex(
-      (todo) => todo.text == text
+      (todo) => todo.text === text
     )
     newTodos[todoIndex].completed = !newTodos[todoIndex].completed
     saveTodos(newTodos)
@@ -69,7 +47,7 @@ function App() {
   const deleteTodo = (text) => {
     const newTodos = [...todos]
     const todoIndex = newTodos.findIndex(
-      (todo) => todo.text == text
+      (todo) => todo.text === text
     )
     newTodos.splice(todoIndex, 1);
     saveTodos(newTodos)
